@@ -1,4 +1,7 @@
 ﻿using Domain;
+using Domain.Aggregates.ImageTag;
+using Domain.Aggregates.ImageTag.Info.InfoTypes;
+using Domain.Aggregates.Snorkel;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
