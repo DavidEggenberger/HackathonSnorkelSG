@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace Domain
+namespace Domain.ApplicationUserAggregate
 {
     public class ApplicationUser : IdentityUser
     {

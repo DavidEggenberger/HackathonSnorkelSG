@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Aggregates.ImageTag.Info
+namespace Domain.ImageTagAggregate
 {
     public class InfoComment
     {

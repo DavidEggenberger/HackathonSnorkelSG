@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.ApplicationUserAggregate;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

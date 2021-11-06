@@ -1,12 +1,12 @@
 ﻿using Domain;
-using Domain.Aggregates.Snorkel;
+using Domain.ApplicationUserAggregate;
+using Domain.SnorkelAggregate;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SharedContracts.Aggregates.Snorkel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

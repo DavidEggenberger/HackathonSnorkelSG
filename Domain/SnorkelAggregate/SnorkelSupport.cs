@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Aggregates.Snorkel
+namespace Domain.SnorkelAggregate
 {
     public class SnorkelSupport
     {

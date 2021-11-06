@@ -1,5 +1,6 @@
 using Azure.Identity;
 using Domain;
+using Domain.ApplicationUserAggregate;
 using IdentityServer4.Models;
 using Infrastructure.Identity;
 using Infrastructure.Persistance;
@@ -55,7 +56,7 @@ namespace WebAPI
                           .Build();
                 });
             });
-            services.AddScoped<ComputerVisionClient>(sp => new ComputerVisionClient(new ApiKeyServiceClientCredentials(Configuration[""])) { Endpoint = Configuration[""] });
+            services.AddScoped<ComputerVisionClient>(sp => new ComputerVisionClient(new ApiKeyServiceClientCredentials(Configuration["CognitiveServicesKey"])) { Endpoint = Configuration["CognitiveServiceEndpoint"] });
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

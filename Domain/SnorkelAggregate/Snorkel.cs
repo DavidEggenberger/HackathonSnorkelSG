@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Domain.Aggregates.Snorkel
+namespace Domain.SnorkelAggregate
 {
     public class Snorkel
     {

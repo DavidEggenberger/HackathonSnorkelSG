@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Aggregates.ImageTag.Info.InfoTypes
+namespace Domain.SnorkelAggregate
 {
-    public class DescriptionInfo : Info
+    public enum SnorkelSupportType
     {
+        Interesting,
+        Support
     }
 }

@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.SnorkelAggregate;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,9 +21,12 @@ namespace WebAPI.Controllers.Aggregates
             ComputerVisionClient = computerVisionClient;
         }
         
-        public async Task<ActionResult> AnalyzeImage()
+        [HttpPost]
+        public async Task<ActionResult> AnalyzeImage(Image image)
         {
-            await ComputerVisionClient.DetectObjectsInStreamAsync();
+            MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(image.Base64Data));
+            DetectResult detectResult = await ComputerVisionClient.DetectObjectsInStreamAsync(memoryStream);
+            return Ok(detectResult);
         }
     }
 }
