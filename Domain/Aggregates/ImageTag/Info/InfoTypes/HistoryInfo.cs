@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Aggregates.ImageTag.Info.InfoTypes
 {
     public class HistoryInfo : Info
     {

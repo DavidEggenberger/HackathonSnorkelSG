@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain;
+using Infrastructure.Persistance;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,22 @@ namespace WebAPI.Controllers.Aggregates
     [ApiController]
     public class SnorkelController : ControllerBase
     {
+        private ApplicationDbContext applicationDbContext { get; }
+        public SnorkelController(ApplicationDbContext applicationDbContext)
+        {
+            this.applicationDbContext = applicationDbContext;
+        }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Snorkel>>> GetSnorkels()
+        {
+            
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateSnorkel()
+        {
+
+        }
     }
 }

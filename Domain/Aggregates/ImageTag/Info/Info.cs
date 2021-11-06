@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Domain
+namespace Domain.Aggregates.ImageTag.Info
 {
     public class Info
     {
