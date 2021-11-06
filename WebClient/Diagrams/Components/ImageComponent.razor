@@ -5,11 +5,48 @@
         <div class="ImageContainer">
             @if (base64Local?.Length > 0)
             {
-                <img src="@base64LocalImage(base64Local)" />
+                <div class="imageAnalysisContainer" style="position: relative;">
+                    @foreach (var item in detectedObjects.Where(o => o.Shown))
+                    {
+                        <div class="detectedObject" style="position: absolute; @(item.ToString())">
+                            <div style="position: relative; height: 100%; width: 100%;">
+                                <h8 style="position: absolute; bottom: 4px; left: 5px;">
+                                    @item.ObjectName
+                                </h8>
+                            </div>                
+                        </div>
+                    }
+                    <img src="@base64LocalImage(base64Local)" />
+                </div>
             }
             else
             {
                 <h3>Upload an image <br /> to create a snorkel!</h3>
+            }
+        </div>
+        <div class="detectedObjectContainer">
+            @if (detectedObjects != null)
+            {
+                <h9>Detected Tags:</h9>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Percentage</th>
+                            <th>Show</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in detectedObjects)
+                        {
+                            <tr>
+                                <td>@item.ObjectName</td>
+                                <td>@item.Percentage</td>
+                                <td><input type="checkbox" @bind-value="@item.Shown" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
         </div>
         <label for="inputFile">@(base64Local == null ? "Upload Image" : "Change Image")</label>
@@ -31,23 +68,47 @@
     private string base64Local;
     private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
 
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
     private async Task AnalyzeImageAsync(InputFileChangeEventArgs e)
     {
+        detectedObjects = new List<DetectedObject>();
         MemoryStream ms = new MemoryStream();
         await e.File.OpenReadStream().CopyToAsync(ms);
         base64Local = Convert.ToBase64String(ms.ToArray());
         Image image = new Image() { Base64Data = base64Local };
         HttpResponseMessage hrm = await httpClient.PostAsJsonAsync<Image>("api/imageanalysis", image);
         coginitiveServicesDetectResult = JsonSerializer.Deserialize<AzureCognitiveServiceRoot>(await hrm.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-        
+        (decimal width, decimal height) = (coginitiveServicesDetectResult.Metadata.Width, coginitiveServicesDetectResult.Metadata.Height);
+        foreach (var item in coginitiveServicesDetectResult.Objects.GroupBy(x => x.ObjectProperty).Select(s => s.FirstOrDefault()).Where(o => o.Confidence > 0.4))
+        {
+            detectedObjects.Add(new DetectedObject
+            {
+                Width = (item.Rectangle.X / width) * 100,
+                Height = (item.Rectangle.Y / height) * 100,
+                Top = (item.Rectangle.H / height) * 100,
+                Left = (item.Rectangle.W / width) * 100,
+                ObjectName = item.ObjectProperty,
+                Percentage = item.Confidence,
+                Shown = true
+            });
+        }
     }
 
     private class DetectedObject
     {
-        public decimal PercentageX { get; set; }
-        public decimal PercentageY { get; set; }
+        public decimal Top { get; set; }
+        public decimal Left { get; set; }
         public decimal Height { get; set; }
         public decimal Width { get; set; }
         public bool Shown { get; set; }
+        public string ObjectName { get; set; }
+        public double Percentage { get; set; }
+        public override string ToString()
+        {
+            return $"top: {Top}%; left: {Left}%; height: {Height}%; width: {Width}%;";
+        }
     }
 }
