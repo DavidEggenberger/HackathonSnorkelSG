@@ -1,6 +1,6 @@
 ﻿.CreateSnorkelContainer{
     display: grid;
-    grid-template-rows: 1fr 6fr;
+    grid-template-rows: 50px 1fr;
     height: 100%;
 }
 .SnorkelConfigurationContainer {
@@ -9,4 +9,22 @@
 }
 .DiagramContainer{
     height: 100%;
+}
+aside {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    border: 1px solid white;
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    height: 100%;
+    box-sizing: border-box;
+}
+section {
+    cursor: grab;
+    border: 3px solid white;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 15px;
+    padding: 5px;
+    font-size: 16px;
 }

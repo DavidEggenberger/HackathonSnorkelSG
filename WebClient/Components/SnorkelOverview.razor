@@ -27,12 +27,17 @@
 
 @code{
     [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+    [CascadingParameter]
     public IModalService Modal { get; set; }
 
     List<Snorkel> snorkels;
     protected override async Task OnInitializedAsync()
     {
-        snorkels = await httpClient.GetFromJsonAsync<List<Snorkel>>("api/snorkel");
+        if((await AuthState).User.Identity.IsAuthenticated)
+        {
+            snorkels = await httpClient.GetFromJsonAsync<List<Snorkel>>("api/snorkel");
+        }
     }
     private void NavigateToCreateSnorkelPage()
     {

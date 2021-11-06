@@ -4,7 +4,10 @@
     <div class="card-body">
         <h3>ImageComponent</h3>
         <label for="inputFile">Upload File</label>
-        <img src="@base64LocalImage(base64Local)" />
+        @if (base64Local?.Length > 0)
+        {
+            <img src="@base64LocalImage(base64Local)" />
+        }
         <InputFile style="display: none;" id="inputFile" OnChange="async (inputArgs) => await AnalyzeImageAsync(inputArgs)" />
 
         @if (coginitiveServicesDetectResult?.Objects is not null)

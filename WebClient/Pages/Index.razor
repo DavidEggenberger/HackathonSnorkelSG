@@ -2,9 +2,44 @@
 
 <div class="IndexContainer">
     <aside>
-        <SnorkelOverview/>
+        <SnorkelOverview />
     </aside>
     <div class="MapContainer">
-
+        @*<PinMap Data="@agents" PinLongitude="@(x => x.Longitude)" PinLatitude="@(x => x.Latitude)" UserId="(x => x.Id)">
+            <PinTemplate>
+                <h4>@context.Name</h4>
+                <p><strong>Mission:</strong> @context.Mission</p>
+            </PinTemplate>
+        </PinMap>*@
     </div>
 </div>
+
+@code{
+    private Agent selectedAgent;
+    private List<Agent> agents;
+    protected override void OnInitialized()
+    {
+        agents = new List<Agent>()
+    {
+            new Agent{ Name = "Iwan", Mission = "Inspect the Gym", Latitude = 47.41985431846254, Longitude = 9.3658882367081},
+            new Agent{ Name = "Lukas", Mission = "Inspect the Gym", Latitude = 47.41985431846254, Longitude = 9.3658882367081},
+            new Agent{ Name = "Lea", Mission = "Infiltrating the swimming pond", Latitude = 47.41985431846254, Longitude = 9.3658882367081},
+            new Agent{ Name = "Sabine", Mission = "Checking out the hospital supply", Latitude = 47.41985431846254, Longitude = 9.3658882367081},
+        };
+    }
+    public void SelectAgent(Agent agent)
+    {
+        selectedAgent = agent;
+        StateHasChanged();
+    }
+
+    public class Agent
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public string Name { get; set; }
+        public string Mission { get; set; }
+        public bool Shown { get; set; }
+    }
+}

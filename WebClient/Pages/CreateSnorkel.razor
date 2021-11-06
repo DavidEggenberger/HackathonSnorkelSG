@@ -8,7 +8,12 @@
     </div>
     <div class="SnorkelConfigurationContainer">
         <aside>
-
+            @foreach (var item in configurationInfos)
+            {
+                <section draggable="true" @ondragstart="() => DragStart(item)">
+                    @item.NameOfType
+                </section>
+            }
         </aside>
         <div class="DiagramContainer" ondragover="event.preventDefault();" dropzone @ondrop="OnDrop">
             <CascadingValue Value="diagram">
@@ -20,9 +25,30 @@
 
 
 @code{
+    private List<ConfigurationInfo> configurationInfos;
+    private ConfigurationInfo draggedConfigurationInfo;
     private Diagram diagram;
     protected override async Task OnInitializedAsync()
     {
+        configurationInfos = new List<ConfigurationInfo>
+        {
+            new ConfigurationInfo
+            {
+                NameOfType = "Coordinates"
+            },
+            new ConfigurationInfo
+            {
+                NameOfType = "History"
+            },
+            new ConfigurationInfo
+            {
+                NameOfType = "Activity"
+            },
+            new ConfigurationInfo
+            {
+                NameOfType = "Description"
+            }
+        };
         var options = new DiagramOptions
         {
             DeleteKey = "Delete",
@@ -39,13 +65,31 @@
             }
         };
         diagram = new Diagram(options);
+        diagram.RegisterModelComponent<CoordinatesNode, CoordinatesComponent>();
         diagram.RegisterModelComponent<ImageNode, ImageComponent>();
+        diagram.RegisterModelComponent<HistoryInfoNode, HistoryInfoComponent>();
+        diagram.RegisterModelComponent<ActivityInfoNode, ActivityInfoComponent>();
+        diagram.RegisterModelComponent<DescriptionInfoNode, DescriptionInfoComponent>();
         diagram.Nodes.Add(new ImageNode(new Point(300, 300)));
         StateHasChanged();
     }
-    
-    private void OnDrop()
-        {
 
-        }
+    public void OnDrop(DragEventArgs e)
+    {
+        var position = diagram.GetRelativeMousePoint(e.ClientX, e.ClientY);
+        Point point = new Point(position.X, position.Y);
+        NodeModel nodeModel = draggedConfigurationInfo.NameOfType switch
+        {
+            "Coordinates" => new CoordinatesNode(point),
+            "History" => new HistoryInfoNode(point),
+            "Activity" => new ActivityInfoNode(point),
+            "Description" => new DescriptionInfoNode(point)
+        };
+        diagram.Nodes.Add(nodeModel);
+        draggedConfigurationInfo = null;
+    }
+    public void DragStart(ConfigurationInfo configurationInfo)
+    {
+        draggedConfigurationInfo = configurationInfo;
+    }
 }
