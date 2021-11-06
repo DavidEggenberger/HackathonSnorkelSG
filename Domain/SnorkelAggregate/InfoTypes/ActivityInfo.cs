@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.SnorkelAggregate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.ImageTagAggregate.InfoTypes
 {
-    public class MusicInfo : Info
+    public class ActivityInfo : Info
     {
+
     }
 }

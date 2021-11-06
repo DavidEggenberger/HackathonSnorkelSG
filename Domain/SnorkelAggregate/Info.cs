@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.ImageTagAggregate.InfoTypes
+namespace Domain.SnorkelAggregate
 {
-    public class ActivityInfo : Info
+    public class Info
     {
+        public Guid Id { get; set; }
     }
 }

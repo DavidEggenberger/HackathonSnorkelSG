@@ -25,11 +25,18 @@
 
 
 @code{
+    private Snorkel snorkelInConfiguration;
     private List<ConfigurationInfo> configurationInfos;
     private ConfigurationInfo draggedConfigurationInfo;
     private Diagram diagram;
     protected override async Task OnInitializedAsync()
     {
+        snorkelInConfiguration = new Snorkel()
+        {
+            DescriptionInfos = new List<DescriptionInfo>(),
+            ActivityInfos = new List<ActivityInfo>(),
+            HistoryInfos = new List<HistoryInfo>()
+        };
         configurationInfos = new List<ConfigurationInfo>
         {
             new ConfigurationInfo
@@ -80,10 +87,10 @@
         Point point = new Point(position.X, position.Y);
         NodeModel nodeModel = draggedConfigurationInfo.NameOfType switch
         {
-            "Coordinates" => new CoordinatesNode(point),
-            "History" => new HistoryInfoNode(point),
-            "Activity" => new ActivityInfoNode(point),
-            "Description" => new DescriptionInfoNode(point)
+            "Coordinates" => new CoordinatesNode(point) { SnorkelInConfiguration = snorkelInConfiguration },
+            "History" => new HistoryInfoNode(point) { SnorkelInConfiguration = snorkelInConfiguration },
+            "Activity" => new ActivityInfoNode(point) { SnorkelInConfiguration = snorkelInConfiguration },
+            "Description" => new DescriptionInfoNode(point) { SnorkelInConfiguration = snorkelInConfiguration }
         };
         diagram.Nodes.Add(nodeModel);
         draggedConfigurationInfo = null;

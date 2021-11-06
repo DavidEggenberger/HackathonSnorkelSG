@@ -13,11 +13,9 @@ namespace Infrastructure.Persistance
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
         public DbSet<Snorkel> Snorkels { get; set; }
-        public DbSet<ImageTag> ImageTags { get; set; }
         public DbSet<ActivityInfo> ActivityInfos { get; set; }
         public DbSet<DescriptionInfo> DescriptionInfos { get; set; }
         public DbSet<HistoryInfo> HistoryInfos { get; set; }
-        public DbSet<MusicInfo> MusicInfos { get; set; }
 
         public ApplicationDbContext(
            DbContextOptions options,
