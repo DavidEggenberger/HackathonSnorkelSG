@@ -8,6 +8,8 @@
 }
 aside{
     height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
 }
 .MapContainer {
     height: 100%;

@@ -13,8 +13,6 @@ nav{
 }
 main{
     height: calc(100vh - 80px);
-    box-sizing: border-box;
-    padding: 20px 0 30px 15px;
 }
 .LogoSection{
     display: flex;
