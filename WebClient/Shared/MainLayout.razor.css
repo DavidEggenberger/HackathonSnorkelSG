@@ -9,6 +9,7 @@ nav{
     align-items: flex-end;
     justify-content: space-between;
     padding: 15px 15px 5px 15px;
+    box-sizing: border-box;
 }
 main{
     height: calc(100vh - 80px);
@@ -19,6 +20,9 @@ main{
 }
 img{
     margin-right: 15px;
+}
+.ProfileImage{
+    margin-left: 10px;
 }
 button{
     padding: 3px;
@@ -43,4 +47,7 @@ a:focus, a:active, a {
 .ProfileSection{
     display: flex;
     align-items: flex-end;
+}
+img{
+    height: 50px;
 }

@@ -1,0 +1,7 @@
+﻿.AuthorizingContainer{
+    height: 100%;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    justify-content: center;
+    align-content: center;
+}

@@ -1,0 +1,41 @@
+﻿@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<div class="SnorkelOverviewContainer">
+    <div class="FilterSection">
+
+    </div>
+    <div class="OverviewSection">
+
+    </div>
+    <div class="CreateSnorkelSection">
+        <AuthorizeView>
+            <Authorized>
+                <div class="CreateSnorkelDisplay">
+                    <h3>Create a snorkel</h3>
+                    <div class="CreateSnorkelIcon" @onclick="() => NavigateToCreateSnorkelPage()">
+                        <img src="/plus.png" />
+                    </div>
+                </div>       
+            </Authorized>
+            <NotAuthorized>
+                <a href="authentication/login">Log in to create a snorkel</a>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</div>
+
+@code{
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    List<Snorkel> snorkels;
+    protected override async Task OnInitializedAsync()
+    {
+        snorkels = await httpClient.GetFromJsonAsync<List<Snorkel>>("api/snorkel");
+    }
+    private void NavigateToCreateSnorkelPage()
+    {
+        navigationManager.NavigateTo("/createsnorkel");
+    }
+}

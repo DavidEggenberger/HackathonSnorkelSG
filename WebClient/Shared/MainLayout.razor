@@ -14,9 +14,10 @@
             </NotAuthorized>
             <Authorized>
                 <div class="ProfileSection">
-                    <h4>Hello, @context.User.Identity.Name!</h4>
+                    <h3>Hello, @context.User.Identity.Name!</h3>
+                    <img class="ProfileImage" src="@context.User.Claims.First(claim => claim.Type == "picture").Value" />
+                    <button class="nav-link btn btn-link" @onclick="BeginLogout"><a>Log out</a></button>
                 </div>
-                <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
             </Authorized>
         </AuthorizeView>
     </nav>
