@@ -18,5 +18,29 @@ main{
     align-items: flex-end;
 }
 img{
-    margin-right: 10px;
+    margin-right: 15px;
+}
+button{
+    padding: 3px;
+    border-radius: 5px;
+    border: 3px solid white;
+}
+button {
+    display: block;
+    background-color: unset;
+    height: 36px;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+a{
+    font-size: 22px;
+}
+a:focus, a:active, a {
+    color: white !important;
+}
+.ProfileSection{
+    display: flex;
+    align-items: flex-end;
 }

@@ -172,7 +172,7 @@ namespace WebAPI
                         }
                     };
                     var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])), SecurityAlgorithms.HmacSha256);
-                });
+                }).AddProfileService<ProfileService>();
             }
             if (webHostEnvironment.IsProduction())
             {
@@ -213,7 +213,7 @@ namespace WebAPI
                         }
                     };
                     var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])), SecurityAlgorithms.HmacSha256);
-                });
+                }).AddProfileService<ProfileService>();
             }
             #endregion
             services.Configure<JwtBearerOptions>(IdentityServerJwtConstants.IdentityServerJwtBearerScheme, options =>

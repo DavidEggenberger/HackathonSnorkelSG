@@ -13,7 +13,9 @@
                 <button><a href="authentication/login">Log in</a></button>
             </NotAuthorized>
             <Authorized>
-                <h4>Hello, @context.User.Identity.Name!</h4>
+                <div class="ProfileSection">
+                    <h4>Hello, @context.User.Identity.Name!</h4>
+                </div>
                 <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
             </Authorized>
         </AuthorizeView>
