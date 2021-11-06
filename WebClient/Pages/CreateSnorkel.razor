@@ -2,33 +2,50 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
+<div class="CreateSnorkelContainer">
+    <div class="TitleSection">
+        <h3>Create and configure a new snorkel!</h3>
+    </div>
+    <div class="SnorkelConfigurationContainer">
+        <aside>
 
-<h3>Create and configure a new snorkel!</h3>
-
-<img src="@base64LocalImage(base64Local)" />
-<InputFile OnChange="async (inputArgs) => await AnalyzeImageAsync(inputArgs)" />
-
-@if (coginitiveServicesDetectResult?.Objects is not null)
-{
-    foreach (var item in coginitiveServicesDetectResult.Objects)
-    {
-        <p>@item.ObjectProperty</p>
-        <p>@item.Confidence</p>
-    }
-}
+        </aside>
+        <div class="DiagramContainer" ondragover="event.preventDefault();" dropzone @ondrop="OnDrop">
+            <CascadingValue Value="diagram">
+                <DiagramCanvas></DiagramCanvas>
+            </CascadingValue>
+        </div>
+    </div>
+</div>
 
 
 @code{
-    private AzureCognitiveServiceRoot coginitiveServicesDetectResult;
-    private string base64Local;
-    private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
-    private async Task AnalyzeImageAsync(InputFileChangeEventArgs e)
+    private Diagram diagram;
+    protected override async Task OnInitializedAsync()
     {
-        MemoryStream ms = new MemoryStream();
-        await e.File.OpenReadStream().CopyToAsync(ms);
-        base64Local = Convert.ToBase64String(ms.ToArray());
-        Image image = new Image() { Base64Data = base64Local };
-        HttpResponseMessage hrm = await httpClient.PostAsJsonAsync<Image>("api/imageanalysis", image);
-        coginitiveServicesDetectResult = JsonSerializer.Deserialize<AzureCognitiveServiceRoot>(await hrm.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        var options = new DiagramOptions
+        {
+            DeleteKey = "Delete",
+            DefaultNodeComponent = null,
+            AllowMultiSelection = true,
+            AllowPanning = false,
+            Zoom = new DiagramZoomOptions
+            {
+                Enabled = false
+            },
+            Links = new DiagramLinkOptions
+            {
+                DefaultColor = "white"
+            }
+        };
+        diagram = new Diagram(options);
+        diagram.RegisterModelComponent<ImageNode, ImageComponent>();
+        diagram.Nodes.Add(new ImageNode(new Point(300, 300)));
+        StateHasChanged();
     }
+    
+    private void OnDrop()
+        {
+
+        }
 }

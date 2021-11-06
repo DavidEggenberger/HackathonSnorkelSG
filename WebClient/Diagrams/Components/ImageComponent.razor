@@ -1,0 +1,39 @@
+﻿@inject HttpClient httpClient
+
+<div class="card">
+    <div class="card-body">
+        <h3>ImageComponent</h3>
+        <label for="inputFile">Upload File</label>
+        <img src="@base64LocalImage(base64Local)" />
+        <InputFile style="display: none;" id="inputFile" OnChange="async (inputArgs) => await AnalyzeImageAsync(inputArgs)" />
+
+        @if (coginitiveServicesDetectResult?.Objects is not null)
+        {
+            foreach (var item in coginitiveServicesDetectResult.Objects)
+            {
+                <p>@item.ObjectProperty</p>
+                <p>@item.Confidence</p>
+            }
+        }
+    </div>
+</div>
+
+
+@code{
+    [Parameter]
+    public ImageNode Node { get; set; }
+
+    private AzureCognitiveServiceRoot coginitiveServicesDetectResult;
+    private string base64Local;
+    private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
+
+    private async Task AnalyzeImageAsync(InputFileChangeEventArgs e)
+    {
+        MemoryStream ms = new MemoryStream();
+        await e.File.OpenReadStream().CopyToAsync(ms);
+        base64Local = Convert.ToBase64String(ms.ToArray());
+        Image image = new Image() { Base64Data = base64Local };
+        HttpResponseMessage hrm = await httpClient.PostAsJsonAsync<Image>("api/imageanalysis", image);
+        coginitiveServicesDetectResult = JsonSerializer.Deserialize<AzureCognitiveServiceRoot>(await hrm.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+    }
+}

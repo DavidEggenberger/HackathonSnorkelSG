@@ -1,0 +1,12 @@
+﻿.CreateSnorkelContainer{
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    height: 100%;
+}
+.SnorkelConfigurationContainer {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.DiagramContainer{
+    height: 100%;
+}
