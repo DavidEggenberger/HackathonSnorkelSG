@@ -5,12 +5,12 @@
         <SnorkelOverview />
     </aside>
     <div class="MapContainer">
-        @*<PinMap Data="@agents" PinLongitude="@(x => x.Longitude)" PinLatitude="@(x => x.Latitude)" UserId="(x => x.Id)">
+        <PinMap Data="@agents" PinLongitude="@(x => x.Longitude)" PinLatitude="@(x => x.Latitude)" PinId="(x => x.Id)">
             <PinTemplate>
                 <h4>@context.Name</h4>
                 <p><strong>Mission:</strong> @context.Mission</p>
             </PinTemplate>
-        </PinMap>*@
+        </PinMap>
     </div>
 </div>
 
