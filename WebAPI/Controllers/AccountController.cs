@@ -46,7 +46,6 @@ namespace WebAPI.Controllers
             return signInResult switch
             {
                 Microsoft.AspNetCore.Identity.SignInResult { Succeeded: true } => LocalRedirect(ReturnUrl),
-                Microsoft.AspNetCore.Identity.SignInResult { RequiresTwoFactor: true } => RedirectToPage("/TwoFactorLogin", new { ReturnUrl = ReturnUrl }),
                 _ => Redirect("/")
             };
         }

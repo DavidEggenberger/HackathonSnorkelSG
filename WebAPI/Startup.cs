@@ -57,6 +57,10 @@ namespace WebAPI
                 });
             });
             services.AddScoped<ComputerVisionClient>(sp => new ComputerVisionClient(new ApiKeyServiceClientCredentials(Configuration["CognitiveServicesKey"])) { Endpoint = Configuration["CognitiveServiceEndpoint"] });
+            services.AddHttpClient("LinkedIn", client =>
+            {
+                client.BaseAddress = new Uri("https://api.linkedin.com/v2");
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -224,7 +228,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseExceptionHandler("/Error");
+            app.UseDeveloperExceptionPage();
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
 
