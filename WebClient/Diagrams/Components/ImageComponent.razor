@@ -60,6 +60,8 @@
 
 
 @code{
+    [CascadingParameter]
+    public Action UpdateSnorkelComponent { get; set; }
     [Parameter]
     public ImageNode Node { get; set; }
 
@@ -79,6 +81,7 @@
         await e.File.OpenReadStream().CopyToAsync(ms);
         base64Local = Convert.ToBase64String(ms.ToArray());
         Image image = new Image() { Base64Data = base64Local };
+        Node.SnorkelInConfiguration.Image = image;
         HttpResponseMessage hrm = await httpClient.PostAsJsonAsync<Image>("api/imageanalysis", image);
         coginitiveServicesDetectResult = JsonSerializer.Deserialize<AzureCognitiveServiceRoot>(await hrm.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         (decimal width, decimal height) = (coginitiveServicesDetectResult.Metadata.Width, coginitiveServicesDetectResult.Metadata.Height);
@@ -95,6 +98,8 @@
                 Shown = true
             });
         }
+        StateHasChanged();
+        UpdateSnorkelComponent();
     }
 
     private class DetectedObject

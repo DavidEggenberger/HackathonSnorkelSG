@@ -9,5 +9,6 @@ namespace Domain.ImageTagAggregate.InfoTypes
 {
     public class DescriptionInfo : Info
     {
+        public string Description { get; set; }
     }
 }

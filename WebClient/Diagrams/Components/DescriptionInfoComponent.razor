@@ -1,6 +1,8 @@
 ﻿<div class="card">
     <div class="card-body">
-        <h3>Description</h3>
+        <h3>Describe your snorkel</h3>
+        <input @bind="description"/>
+        <button @onclick="() => AddDescription()">Add Description</button>
     </div>
     @foreach (var port in Node.Ports)
     {
@@ -9,6 +11,15 @@
 </div>
 
 @code{
+    string description;
     [Parameter]
     public DescriptionInfoNode Node { get; set; }
+
+    public void AddDescription()
+    {
+        Node.SnorkelInConfiguration.DescriptionInfos.Add(new DescriptionInfo
+        {
+            Description = description
+        });
+    }
 }

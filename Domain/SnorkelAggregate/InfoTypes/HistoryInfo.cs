@@ -9,5 +9,7 @@ namespace Domain.ImageTagAggregate.InfoTypes
 {
     public class HistoryInfo : Info
     {
+        public int Year { get; set; }
+        public string Event { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace Domain.ImageTagAggregate.InfoTypes
 {
     public class ActivityInfo : Info
     {
-
+        public string ActivityName { get; set; }
     }
 }

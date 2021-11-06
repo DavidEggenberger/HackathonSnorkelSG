@@ -2,66 +2,80 @@
 @inject HttpClient httpClient
 @inject NavigationManager navigationManager
 
-<div class="CreateSnorkelContainer">
-    <div class="TitleSection">
-        <h3>Create and configure a new snorkel!</h3>
-    </div>
-    <div class="SnorkelConfigurationContainer">
-        <aside>
-            @foreach (var item in configurationInfos)
+<CascadingValue Value="update">
+    <div class="CreateSnorkelContainer">
+        <div class="TitleSection">
+            <h3>Create and configure a new snorkel!</h3>
+            @if (snorkelInConfiguration.Image.Base64Data is not null)
             {
-                <section draggable="true" @ondragstart="() => DragStart(item)">
-                    <div>
-                        <h3>@item.NameOfType</h3>
-                        <h8>@item.Description</h8>
-                    </div>
-                    <img height="35" src="@item.IconUri"/>
-                </section>
+                <button @onclick="async() => await CreateSnorkelAsync()">Create Snorkel!</button>
             }
-        </aside>
-        <div class="DiagramContainer" ondragover="event.preventDefault();" dropzone @ondrop="OnDrop">
-            <CascadingValue Value="diagram">
-                <DiagramCanvas></DiagramCanvas>
-            </CascadingValue>
+        </div>
+        <div class="SnorkelConfigurationContainer">
+            <aside>
+                @foreach (var item in configurationInfos)
+                {
+                    <section draggable="true" @ondragstart="() => DragStart(item)">
+                        <div>
+                            <h3>@item.NameOfType</h3>
+                            <h8>@item.Description</h8>
+                        </div>
+                        <img src="@item.IconUri" />
+                    </section>
+                }
+            </aside>
+            <div class="DiagramContainer" ondragover="event.preventDefault();" dropzone @ondrop="OnDrop">
+                <CascadingValue Value="diagram">
+                    <DiagramCanvas></DiagramCanvas>
+                </CascadingValue>
+            </div>
         </div>
     </div>
-</div>
+</CascadingValue>
+
 
 
 @code{
+    public Action update;
     private Snorkel snorkelInConfiguration;
     private List<ConfigurationInfo> configurationInfos;
     private ConfigurationInfo draggedConfigurationInfo;
     private Diagram diagram;
     protected override async Task OnInitializedAsync()
     {
+        update = () => this.StateHasChanged();
         snorkelInConfiguration = new Snorkel()
         {
             DescriptionInfos = new List<DescriptionInfo>(),
             ActivityInfos = new List<ActivityInfo>(),
-            HistoryInfos = new List<HistoryInfo>()
+            HistoryInfos = new List<HistoryInfo>(),
+            Image = new Image()
         };
         configurationInfos = new List<ConfigurationInfo>
         {
             new ConfigurationInfo
             {
                 NameOfType = "Coordinates",
-                Description = "The coordinates where your snorkel can be found"
+                Description = "The coordinates where your snorkel can be found",
+                IconUri = "/globe.png"
             },
             new ConfigurationInfo
             {
                 NameOfType = "History",
-                Description = "History that can be explored at your snorkel"
+                Description = "History that can be explored at your snorkel",
+                IconUri = "/history.png"
             },
             new ConfigurationInfo
             {
                 NameOfType = "Activity",
-                Description = "Activities that can be done at the snorkel"
+                Description = "Activities that can be done at the snorkel",
+                IconUri = "/stretching.png"
             },
             new ConfigurationInfo
             {
                 NameOfType = "Description",
-                Description = "General facts you find interesting at the snorkel"
+                Description = "General facts you find interesting at the snorkel",
+                IconUri = "/description.png"
             }
         };
         var options = new DiagramOptions
@@ -85,7 +99,7 @@
         diagram.RegisterModelComponent<HistoryInfoNode, HistoryInfoComponent>();
         diagram.RegisterModelComponent<ActivityInfoNode, ActivityInfoComponent>();
         diagram.RegisterModelComponent<DescriptionInfoNode, DescriptionInfoComponent>();
-        diagram.Nodes.Add(new ImageNode(new Point(300, 300)));
+        diagram.Nodes.Add(new ImageNode(new Point(300, 300)) { SnorkelInConfiguration = snorkelInConfiguration });
         StateHasChanged();
     }
 
@@ -106,5 +120,9 @@
     public void DragStart(ConfigurationInfo configurationInfo)
     {
         draggedConfigurationInfo = configurationInfo;
+    }
+    public async Task CreateSnorkelAsync()
+    {
+        await httpClient.PostAsJsonAsync<Snorkel>("/api/snorkel", snorkelInConfiguration);
     }
 }
