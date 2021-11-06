@@ -8,7 +8,15 @@ nav{
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    padding: 15px 15px 5px 15px;
 }
 main{
     height: calc(100vh - 80px);
+}
+.LogoSection{
+    display: flex;
+    align-items: flex-end;
+}
+img{
+    margin-right: 10px;
 }
