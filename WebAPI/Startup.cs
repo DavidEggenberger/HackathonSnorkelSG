@@ -163,7 +163,7 @@ namespace WebAPI
                             Scopes = new List<string> {"API"}
                         }
                     };
-                    var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigninKey"])), SecurityAlgorithms.HmacSha256);
+                    var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])), SecurityAlgorithms.HmacSha256);
                 });
             }
             if (webHostEnvironment.IsProduction())
@@ -204,7 +204,7 @@ namespace WebAPI
                             Scopes = new List<string> {"API"}
                         }
                     };
-                    var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigninKey"])), SecurityAlgorithms.HmacSha256);
+                    var cert = options.SigningCredential = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["SigningKey"])), SecurityAlgorithms.HmacSha256);
                 });
             }
             #endregion
@@ -231,6 +231,8 @@ namespace WebAPI
             app.UseRouting();
             app.UseCors();
 
+            app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

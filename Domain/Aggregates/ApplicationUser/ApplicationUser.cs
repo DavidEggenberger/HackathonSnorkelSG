@@ -5,6 +5,6 @@ namespace Domain
 {
     public class ApplicationUser : IdentityUser
     {
-        
+        public string PictureUri { get; set; }
     }
 }
