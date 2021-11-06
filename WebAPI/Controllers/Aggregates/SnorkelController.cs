@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SharedContracts.Aggregates.Snorkel;
 using System;
 using System.Collections.Generic;
@@ -29,12 +30,25 @@ namespace WebAPI.Controllers.Aggregates
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Snorkel>>> GetSnorkels()
         {
-            return Ok(applicationDbContext.Snorkels);
+            return Ok(applicationDbContext.Snorkels
+                .Include(snorkel => snorkel.SnorkelSupports)
+                .AsNoTracking());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Snorkel>> GetSnorkelById(Guid id)
         {
+            return Ok(applicationDbContext.Snorkels
+                .Include(snorkel => snorkel.SnorkelSupports)
+                .FirstOrDefault(snorkel => snorkel.Id == id));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Snorkel>> DeleteSnorkelById(Guid id)
+        {
+            Snorkel snorkel = new Snorkel { Id = id };
+            applicationDbContext.Entry(snorkel).State = EntityState.Deleted;
+            await applicationDbContext.SaveChangesAsync();
             return Ok(applicationDbContext.Snorkels.Find(id));
         }
 
@@ -49,6 +63,22 @@ namespace WebAPI.Controllers.Aggregates
             applicationDbContext.Snorkels.Add(snorkel);
             await applicationDbContext.SaveChangesAsync();
             return CreatedAtAction("GetSnorkelById", new { id = createdId }, snorkel);
+        }
+
+        [HttpPost("{id}")]
+        [Authorize]
+        public async Task<ActionResult> SupportSnorkel([FromRoute] Guid id, [FromBody] SnorkelSupport snorkelSupport)
+        {
+            ApplicationUser applicationUser = await userManager.FindByIdAsync(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            Snorkel snorkel = applicationDbContext.Snorkels
+                .Include(snorkel => snorkel.SnorkelSupports)
+                .FirstOrDefault(snorkel => snorkel.Id == id);
+            if(snorkel.SnorkelSupports.Count(snorkel => snorkel.ApplicationUserId == applicationUser.Id) < 1)
+            {
+                snorkel.SnorkelSupports.Add(snorkelSupport);
+            }
+            await applicationDbContext.SaveChangesAsync();
+            return Ok();
         }
     }
 }
