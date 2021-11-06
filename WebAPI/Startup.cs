@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Domain;
 using IdentityServer4.Models;
 using Infrastructure.Identity;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +55,7 @@ namespace WebAPI
                           .Build();
                 });
             });
+            services.AddScoped<ComputerVisionClient>(sp => new ComputerVisionClient(new ApiKeyServiceClientCredentials(Configuration[""])) { Endpoint = Configuration[""] });
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
