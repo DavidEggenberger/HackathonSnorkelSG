@@ -2,22 +2,18 @@
 
 <div class="card">
     <div class="card-body">
-        <h3>ImageComponent</h3>
-        <label for="inputFile">Upload File</label>
-        @if (base64Local?.Length > 0)
-        {
-            <img src="@base64LocalImage(base64Local)" />
-        }
-        <InputFile style="display: none;" id="inputFile" OnChange="async (inputArgs) => await AnalyzeImageAsync(inputArgs)" />
-
-        @if (coginitiveServicesDetectResult?.Objects is not null)
-        {
-            foreach (var item in coginitiveServicesDetectResult.Objects)
+        <div class="ImageContainer">
+            @if (base64Local?.Length > 0)
             {
-                <p>@item.ObjectProperty</p>
-                <p>@item.Confidence</p>
+                <img src="@base64LocalImage(base64Local)" />
             }
-        }
+            else
+            {
+                <h3>Upload an image <br /> to create a snorkel!</h3>
+            }
+        </div>
+        <label for="inputFile">@(base64Local == null ? "Upload Image" : "Change Image")</label>
+        <InputFile style="display: none;" id="inputFile" OnChange="async (inputArgs) => await AnalyzeImageAsync(inputArgs)" />
     </div>
     @foreach (var port in Node.Ports)
     {
@@ -30,6 +26,7 @@
     [Parameter]
     public ImageNode Node { get; set; }
 
+    private List<DetectedObject> detectedObjects;
     private AzureCognitiveServiceRoot coginitiveServicesDetectResult;
     private string base64Local;
     private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
@@ -42,5 +39,15 @@
         Image image = new Image() { Base64Data = base64Local };
         HttpResponseMessage hrm = await httpClient.PostAsJsonAsync<Image>("api/imageanalysis", image);
         coginitiveServicesDetectResult = JsonSerializer.Deserialize<AzureCognitiveServiceRoot>(await hrm.Content.ReadAsStringAsync(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        
+    }
+
+    private class DetectedObject
+    {
+        public decimal PercentageX { get; set; }
+        public decimal PercentageY { get; set; }
+        public decimal Height { get; set; }
+        public decimal Width { get; set; }
+        public bool Shown { get; set; }
     }
 }

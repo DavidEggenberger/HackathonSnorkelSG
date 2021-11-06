@@ -1,4 +1,12 @@
-﻿<h3>ActivityInfoComponent</h3>
+﻿<div class="card">
+    <div class="card-body">
+        <h3>ActivityInfoComponent</h3>
+    </div>
+    @foreach (var port in Node.Ports)
+    {
+        <PortRenderer Port="port" />
+    }
+</div>
 
 @code{
     [Parameter]

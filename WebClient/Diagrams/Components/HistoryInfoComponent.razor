@@ -1,4 +1,12 @@
-﻿<h3>HistoryInfoComponent</h3>
+﻿<div class="card">
+    <div class="card-body">
+        <h3>History</h3>
+    </div>
+    @foreach (var port in Node.Ports)
+    {
+        <PortRenderer Port="port" />
+    }
+</div>
 
 @code{
     [Parameter]
