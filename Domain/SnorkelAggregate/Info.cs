@@ -9,5 +9,7 @@ namespace Domain.SnorkelAggregate
     public class Info
     {
         public Guid Id { get; set; }
+        public Guid SnorkelId { get; set; }
+        public Snorkel Snorkel { get; set; }
     }
 }

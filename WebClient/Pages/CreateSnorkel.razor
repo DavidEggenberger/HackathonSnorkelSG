@@ -124,5 +124,6 @@
     public async Task CreateSnorkelAsync()
     {
         await httpClient.PostAsJsonAsync<Snorkel>("/api/snorkel", snorkelInConfiguration);
+        navigationManager.NavigateTo("/");
     }
 }

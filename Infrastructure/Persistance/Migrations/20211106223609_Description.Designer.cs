@@ -4,14 +4,16 @@ using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211106223609_Description")]
+    partial class Description
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace Infrastructure.Persistance.Migrations
                     b.Property<string>("ActivityName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("SnorkelId")
+                    b.Property<Guid?>("SnorkelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -115,7 +117,7 @@ namespace Infrastructure.Persistance.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("SnorkelId")
+                    b.Property<Guid?>("SnorkelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -134,7 +136,7 @@ namespace Infrastructure.Persistance.Migrations
                     b.Property<string>("Event")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("SnorkelId")
+                    b.Property<Guid?>("SnorkelId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Year")
@@ -154,9 +156,6 @@ namespace Infrastructure.Persistance.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Base64Data")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SnorkelId")
@@ -480,44 +479,34 @@ namespace Infrastructure.Persistance.Migrations
 
             modelBuilder.Entity("Domain.ImageTagAggregate.InfoTypes.ActivityInfo", b =>
                 {
-                    b.HasOne("Domain.SnorkelAggregate.Snorkel", "Snorkel")
+                    b.HasOne("Domain.SnorkelAggregate.Snorkel", null)
                         .WithMany("ActivityInfos")
-                        .HasForeignKey("SnorkelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Snorkel");
+                        .HasForeignKey("SnorkelId");
                 });
 
             modelBuilder.Entity("Domain.ImageTagAggregate.InfoTypes.DescriptionInfo", b =>
                 {
-                    b.HasOne("Domain.SnorkelAggregate.Snorkel", "Snorkel")
+                    b.HasOne("Domain.SnorkelAggregate.Snorkel", null)
                         .WithMany("DescriptionInfos")
-                        .HasForeignKey("SnorkelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Snorkel");
+                        .HasForeignKey("SnorkelId");
                 });
 
             modelBuilder.Entity("Domain.ImageTagAggregate.InfoTypes.HistoryInfo", b =>
                 {
-                    b.HasOne("Domain.SnorkelAggregate.Snorkel", "Snorkel")
+                    b.HasOne("Domain.SnorkelAggregate.Snorkel", null)
                         .WithMany("HistoryInfos")
-                        .HasForeignKey("SnorkelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Snorkel");
+                        .HasForeignKey("SnorkelId");
                 });
 
             modelBuilder.Entity("Domain.SnorkelAggregate.Image", b =>
                 {
-                    b.HasOne("Domain.SnorkelAggregate.Snorkel", null)
+                    b.HasOne("Domain.SnorkelAggregate.Snorkel", "Snorkel")
                         .WithOne("Image")
                         .HasForeignKey("Domain.SnorkelAggregate.Image", "SnorkelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Snorkel");
                 });
 
             modelBuilder.Entity("Domain.SnorkelAggregate.SnorkelComment", b =>

@@ -9,13 +9,16 @@
         <PinMap Data="@snorkels" PinLongitude="@(x => x.Longitude)" PinLatitude="@(x => x.Lattitude)" PinId="(x => x.Id)">
             <PinTemplate>
                 <h4>@context.Name</h4>
-                <p></p>
+                <img height="90" src="@(base64LocalImage(context.Image.Base64Data))"/>
+                <br />
+                <a style="color: white !important;" href="@($"/SnorkelDetail/{context.Id}")">Let's snorkle! (Explore the place)'</a>
             </PinTemplate>
         </PinMap>
     </div>
 </div>
 
 @code{
+    private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
     private List<Snorkel> snorkels = new List<Snorkel>();
     protected override async Task OnInitializedAsync()
     {

@@ -4,14 +4,16 @@ using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211106230543_imageAddress")]
+    partial class imageAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -513,11 +515,13 @@ namespace Infrastructure.Persistance.Migrations
 
             modelBuilder.Entity("Domain.SnorkelAggregate.Image", b =>
                 {
-                    b.HasOne("Domain.SnorkelAggregate.Snorkel", null)
+                    b.HasOne("Domain.SnorkelAggregate.Snorkel", "Snorkel")
                         .WithOne("Image")
                         .HasForeignKey("Domain.SnorkelAggregate.Image", "SnorkelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Snorkel");
                 });
 
             modelBuilder.Entity("Domain.SnorkelAggregate.SnorkelComment", b =>

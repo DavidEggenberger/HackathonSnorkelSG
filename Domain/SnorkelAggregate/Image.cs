@@ -7,7 +7,7 @@ namespace Domain.SnorkelAggregate
     {
         public Guid Id { get; set; }
         public Guid SnorkelId { get; set; }
-        public Snorkel Snorkel { get; set; }
         public string Base64Data { get; set; }
+        public string ImageAddress { get; set; }
     }
 }

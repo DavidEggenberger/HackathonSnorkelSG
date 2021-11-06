@@ -3,12 +3,14 @@ using Domain.ApplicationUserAggregate;
 using Domain.SnorkelAggregate;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,8 +33,7 @@ namespace WebAPI.Controllers.Aggregates
         public async Task<ActionResult<IEnumerable<Snorkel>>> GetSnorkels()
         {
             return Ok(applicationDbContext.Snorkels
-                .Include(snorkel => snorkel.SnorkelSupports)
-                .AsNoTracking());
+                .Include(s => s.Image).ToList());
         }
 
         [HttpGet("{id}")]
@@ -54,15 +55,20 @@ namespace WebAPI.Controllers.Aggregates
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> CreateSnorkel(Snorkel snorkel)
+        public async Task<ActionResult> CreateSnorkel(Snorkel snorkel, [FromServices] IWebHostEnvironment env)
         {
             ApplicationUser applicationUser = await userManager.FindByIdAsync(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             Guid createdId = Guid.NewGuid();
             snorkel.Id = createdId;
             snorkel.ApplicationUserId = applicationUser.Id;
+            //Guid pictureUri = Guid.NewGuid();
+            //using FileStream fs = System.IO.File.Create(env.WebRootPath + "/" + pictureUri + ".jpg");
+            //await fs.WriteAsync(Convert.FromBase64String(snorkel.Image.Base64Data));
+            //snorkel.Image.ImageAddress = env.WebRootPath + "/" + pictureUri + ".jpg";
+            //snorkel.Image.Base64Data = string.Empty;
             applicationDbContext.Snorkels.Add(snorkel);
             await applicationDbContext.SaveChangesAsync();
-            return CreatedAtAction("GetSnorkelById", new { id = createdId }, snorkel);
+            return Ok();
         }
 
         [HttpPost("{id}")]
@@ -73,7 +79,7 @@ namespace WebAPI.Controllers.Aggregates
             Snorkel snorkel = applicationDbContext.Snorkels
                 .Include(snorkel => snorkel.SnorkelSupports)
                 .FirstOrDefault(snorkel => snorkel.Id == id);
-            if(snorkel.SnorkelSupports.Count(snorkel => snorkel.ApplicationUserId == applicationUser.Id) < 1)
+            if (snorkel.SnorkelSupports.Count(snorkel => snorkel.ApplicationUserId == applicationUser.Id) < 1)
             {
                 snorkel.SnorkelSupports.Add(snorkelSupport);
             }
