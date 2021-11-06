@@ -17,5 +17,6 @@ namespace Domain.SnorkelAggregate
         public List<DescriptionInfo> DescriptionInfos { get; set; }
         public string TagsCommaSeperated { get; set; }
         public List<SnorkelSupport> SnorkelSupports { get; set; }
+        public List<SnorkelComment> SnorkelComments { get; set; }
     }
 }

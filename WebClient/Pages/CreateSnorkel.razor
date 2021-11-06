@@ -11,7 +11,11 @@
             @foreach (var item in configurationInfos)
             {
                 <section draggable="true" @ondragstart="() => DragStart(item)">
-                    @item.NameOfType
+                    <div>
+                        <h3>@item.NameOfType</h3>
+                        <h8>@item.Description</h8>
+                    </div>
+                    <img height="35" src="@item.IconUri"/>
                 </section>
             }
         </aside>
@@ -41,19 +45,23 @@
         {
             new ConfigurationInfo
             {
-                NameOfType = "Coordinates"
+                NameOfType = "Coordinates",
+                Description = "The coordinates where your snorkel can be found"
             },
             new ConfigurationInfo
             {
-                NameOfType = "History"
+                NameOfType = "History",
+                Description = "History that can be explored at your snorkel"
             },
             new ConfigurationInfo
             {
-                NameOfType = "Activity"
+                NameOfType = "Activity",
+                Description = "Activities that can be done at the snorkel"
             },
             new ConfigurationInfo
             {
-                NameOfType = "Description"
+                NameOfType = "Description",
+                Description = "General facts you find interesting at the snorkel"
             }
         };
         var options = new DiagramOptions
