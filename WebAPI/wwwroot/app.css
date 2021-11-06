@@ -15,7 +15,9 @@ h3{
 #blazor-error-ui {
     display: none;
 }
-
+h4{
+    margin: 0;
+}
 
 .loadingBackground {
     height: 100vh;
