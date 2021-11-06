@@ -44,7 +44,11 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                });
             services.AddSignalR();
             services.AddCors(options =>
             {

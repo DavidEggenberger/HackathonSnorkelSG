@@ -22,7 +22,7 @@ namespace WebAPI.Controllers.Aggregates
         }
         
         [HttpPost]
-        public async Task<ActionResult> AnalyzeImage(Image image)
+        public async Task<ActionResult<DetectResult>> AnalyzeImage(Image image)
         {
             MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(image.Base64Data));
             DetectResult detectResult = await ComputerVisionClient.DetectObjectsInStreamAsync(memoryStream);
