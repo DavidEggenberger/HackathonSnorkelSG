@@ -1,1 +1,14 @@
-
+.page{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+}
+nav{
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+main{
+    height: calc(100vh - 80px);
+}

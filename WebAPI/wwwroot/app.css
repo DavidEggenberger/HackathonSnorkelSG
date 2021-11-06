@@ -1,5 +1,9 @@
 ﻿body {
     margin: 0;
+    height: 100vh;
+    background: linear-gradient(0deg, rgba(251,7,90,1) 0%, rgba(249,83,167,1) 100%);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
 }
 
 #blazor-error-ui {
