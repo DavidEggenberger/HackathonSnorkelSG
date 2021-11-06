@@ -10,6 +10,8 @@ namespace WebClient.Diagrams.Nodes
     {
         public CoordinatesNode(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
+            AddPort(PortAlignment.Top);
+            AddPort(PortAlignment.Bottom);
         }
     }
 }

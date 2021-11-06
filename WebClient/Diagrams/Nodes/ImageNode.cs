@@ -10,6 +10,10 @@ namespace WebClient.Diagrams.Nodes
     {
         public ImageNode(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
+            AddPort(PortAlignment.Top);
+            AddPort(PortAlignment.Bottom);
+            AddPort(PortAlignment.Right);
+            AddPort(PortAlignment.Left);
         }
     }
 }
