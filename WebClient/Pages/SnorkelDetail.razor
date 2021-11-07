@@ -45,6 +45,7 @@
         diagram = new Diagram(options);
         snorkel = await httpClient.GetFromJsonAsync<Snorkel>($"/api/snorkel/{SnorkelId}");
 
+        diagram.RegisterModelComponent<DirectionDisplayNode, DirectionDisplayComponent>();
         diagram.RegisterModelComponent<StreetViewDisplayNode, StreetViewDisplayComponent>();
         diagram.RegisterModelComponent<ImageNodeDisplay, ImageComponentDisplay>();
         diagram.RegisterModelComponent<HistoryInfoNodeDisplay, HistoryInfoComponentDisplay>();
@@ -53,6 +54,8 @@
 
         diagram.Nodes.Add(new ImageNodeDisplay(new Point((diagram.Container.Width / 2) - 120, (diagram.Container.Height / 2) - 120)) { Snorkel = snorkel });
         diagram.Nodes.Add(new StreetViewDisplayNode());
+        diagram.Nodes.Add(new DirectionDisplayNode());
+
         foreach (var item in snorkel.HistoryInfos)
         {
             diagram.Nodes.Add(new HistoryInfoNodeDisplay());
