@@ -98,6 +98,7 @@
                 Shown = true
             });
         }
+        Node.SnorkelInConfiguration.TagsCommaSeperated = string.Join(",", detectedObjects.Select(s => s.ObjectName));
         UpdateSnorkelComponent();
         StateHasChanged();
     }

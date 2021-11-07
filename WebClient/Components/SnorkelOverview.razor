@@ -1,6 +1,7 @@
 ﻿@inject HttpClient httpClient
 @inject NavigationManager navigationManager
 @inject Microsoft.JSInterop.IJSRuntime JS
+@inject IHttpClientFactory httpFactory
 
 <div class="SnorkelOverviewContainer">
     <div class="FilterSection">
@@ -45,10 +46,7 @@
     List<Snorkel> snorkels;
     protected override async Task OnInitializedAsync()
     {
-        if ((await AuthState).User.Identity.IsAuthenticated)
-        {
-            snorkels = await httpClient.GetFromJsonAsync<List<Snorkel>>("api/snorkel");
-        }
+        snorkels = await httpFactory.CreateClient("UnauthenticatedHttpClient").GetFromJsonAsync<List<Snorkel>>("/api/snorkel");
     }
     private void NavigateToCreateSnorkelPage()
     {
