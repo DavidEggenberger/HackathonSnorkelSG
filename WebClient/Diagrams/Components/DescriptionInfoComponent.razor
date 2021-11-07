@@ -17,7 +17,8 @@
     string description;
     [Parameter]
     public DescriptionInfoNode Node { get; set; }
-
+    [CascadingParameter]
+    public Action UpdateSnorkelComponent { get; set; }
     public void AddDescription()
     {
         Node.SnorkelInConfiguration.DescriptionInfos.Add(new DescriptionInfo
@@ -27,5 +28,6 @@
         Node.SnorkelInConfiguration.Name = name;
         description = string.Empty;
         name = string.Empty;
+        UpdateSnorkelComponent();
     }
 }
