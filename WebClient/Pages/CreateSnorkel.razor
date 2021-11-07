@@ -5,11 +5,17 @@
 <CascadingValue Value="update">
     <div class="CreateSnorkelContainer">
         <div class="TitleSection">
-            <h3>Create and configure a new snorkel!</h3>
-            @if (snorkelInConfiguration.Image.Base64Data is not null)
-            {
-                <button @onclick="async() => await CreateSnorkelAsync()">Create Snorkel!</button>
-            }
+            <h3 class="title">Create and configure a new Snorkel!</h3>
+            <div class="CreateButtonContainer">
+                @if (snorkelInConfiguration.Image.Base64Data is not null && snorkelInConfiguration.DescriptionInfos.Count > 0)
+                {
+                    <button @onclick="async() => await CreateSnorkelAsync()">Create Snorkel!</button>
+                }
+                else
+                {
+                    <button style="margin-top: 20px;">To create a Snorkel an image, its coordinates and description are needed</button>
+                }
+            </div>       
         </div>
         <div class="SnorkelConfigurationContainer">
             <aside>
@@ -99,7 +105,8 @@
         diagram.RegisterModelComponent<HistoryInfoNode, HistoryInfoComponent>();
         diagram.RegisterModelComponent<ActivityInfoNode, ActivityInfoComponent>();
         diagram.RegisterModelComponent<DescriptionInfoNode, DescriptionInfoComponent>();
-        diagram.Nodes.Add(new ImageNode(new Point(300, 300)) { SnorkelInConfiguration = snorkelInConfiguration });
+        await Task.Delay(100);
+        diagram.Nodes.Add(new ImageNode(new Point(diagram.Container.Width / 2.4, diagram.Container.Height / 3)) { SnorkelInConfiguration = snorkelInConfiguration });
         StateHasChanged();
     }
 

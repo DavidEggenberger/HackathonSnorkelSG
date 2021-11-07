@@ -1,31 +1,42 @@
 ﻿@inject HttpClient httpClient
 @inject NavigationManager navigationManager
+@inject Microsoft.JSInterop.IJSRuntime JS
 
 <div class="SnorkelOverviewContainer">
     <div class="FilterSection">
 
     </div>
     <div class="OverviewSection">
-
+        @if (snorkels != null)
+        {
+            foreach (var snorkel in snorkels)
+            {
+                <section class="snorkleSection" @onclick="async() => await pinMap.NavigateToPin(snorkel.Lattitude, snorkel.Longitude)">
+                    <p>@snorkel.Name</p>
+                </section>
+            }
+        }
     </div>
     <div class="CreateSnorkelSection">
         <AuthorizeView>
             <Authorized>
                 <div class="CreateSnorkelDisplay">
-                    <h3>Create a snorkel</h3>
+                    <h3>Create a Snorkel</h3>
                     <div class="CreateSnorkelIcon" @onclick="() => NavigateToCreateSnorkelPage()">
                         <img src="/plus.png" />
                     </div>
-                </div>       
+                </div>
             </Authorized>
             <NotAuthorized>
-                <a href="authentication/login">Log in to create a snorkel</a>
+                <a href="authentication/login">Log in to create a Snorkel</a>
             </NotAuthorized>
         </AuthorizeView>
     </div>
 </div>
 
 @code{
+    [Parameter]
+    public PinMap.PinMap<Snorkel> pinMap { get; set; }
     [CascadingParameter]
     public Task<AuthenticationState> AuthState { get; set; }
     [CascadingParameter]
@@ -34,7 +45,7 @@
     List<Snorkel> snorkels;
     protected override async Task OnInitializedAsync()
     {
-        if((await AuthState).User.Identity.IsAuthenticated)
+        if ((await AuthState).User.Identity.IsAuthenticated)
         {
             snorkels = await httpClient.GetFromJsonAsync<List<Snorkel>>("api/snorkel");
         }

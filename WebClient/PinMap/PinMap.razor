@@ -25,4 +25,12 @@
             "PinMap.createOrUpdate",
             new object[] { mapElem, new[] { 9.3748, 47.4239 } });
     }
+
+    public async Task NavigateToPin(double x, double y)
+    {
+        await JS.InvokeAsync<object>(
+        "PinMap.createOrUpdate",
+        new object[] { mapElem, new[] { x, y } });
+        StateHasChanged();
+    }
 }
