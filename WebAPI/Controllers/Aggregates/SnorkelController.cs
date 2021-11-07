@@ -41,16 +41,23 @@ namespace WebAPI.Controllers.Aggregates
         {
             return Ok(applicationDbContext.Snorkels
                 .Include(snorkel => snorkel.SnorkelSupports)
+                .Include(snorkel => snorkel.ActivityInfos)
+                .Include(snorkel => snorkel.DescriptionInfos)
+                .Include(snorkel => snorkel.HistoryInfos)
                 .FirstOrDefault(snorkel => snorkel.Id == id));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Snorkel>> DeleteSnorkelById(Guid id)
         {
-            Snorkel snorkel = new Snorkel { Id = id };
-            applicationDbContext.Entry(snorkel).State = EntityState.Deleted;
-            await applicationDbContext.SaveChangesAsync();
-            return Ok(applicationDbContext.Snorkels.Find(id));
+            ApplicationUser applicationUser = await userManager.FindByIdAsync(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            Snorkel snorkel = applicationDbContext.Snorkels.Find(id);
+            if(snorkel.ApplicationUserId == applicationUser.Id)
+            {
+                applicationDbContext.Remove(snorkel);
+                await applicationDbContext.SaveChangesAsync();
+            }  
+            return Ok();
         }
 
         [HttpPost]

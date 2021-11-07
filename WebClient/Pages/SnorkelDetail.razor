@@ -1,8 +1,61 @@
 ﻿@page "/snorkeldetail/{SnorkelId:guid}"
+@inject HttpClient httpClient
+@inject NavigationManager navManager
 
+<div class="SnorkelDetailContainer">
+    <div class="titleSection">
+        <h2>Explore @snorkel?.Name</h2>
+        <AuthorizeView>
+            @if (context.User.Claims.First(s => s.Type == "sub")?.Value == snorkel?.ApplicationUserId)
+            {
+                <button @onclick="async() => await DeleteSnorkel()">Delete Snorkel</button>
+            }
+        </AuthorizeView>
+        <button @onclick='() => navManager.NavigateTo("/")'>Back to HomePage</button>
+    </div>
+    <div class="DiagramContainer">
+        <CascadingValue Value="diagram">
+            <DiagramCanvas></DiagramCanvas>
+        </CascadingValue>
+    </div>
+</div>
 
-
-@code {
+@code{
     [Parameter]
     public Guid SnorkelId { get; set; }
+    private Snorkel snorkel;
+    private Diagram diagram;
+    protected override async Task OnInitializedAsync()
+    {
+        var options = new DiagramOptions
+        {
+            DeleteKey = "Delete",
+            DefaultNodeComponent = null,
+            AllowMultiSelection = true,
+            AllowPanning = false,
+            Zoom = new DiagramZoomOptions
+            {
+                Enabled = false
+            },
+            Links = new DiagramLinkOptions
+            {
+                DefaultColor = "white"
+            }
+        };
+        diagram = new Diagram(options);
+        snorkel = await httpClient.GetFromJsonAsync<Snorkel>($"/api/snorkel/{SnorkelId}");
+
+        diagram.Nodes.Add(new ImageNode(new Point((diagram.Container.Width / 2) - 120, (diagram.Container.Height / 2) - 120)) { N });
+
+        diagram.RegisterModelComponent<ImageNodeDisplay, ImageComponentDisplay>();
+        diagram.RegisterModelComponent<HistoryInfoNodeDisplay, HistoryInfoComponentDisplay>();
+        diagram.RegisterModelComponent<ActivityInfoNodeDisplay, ActivityInfoComponentDisplay>();
+        diagram.RegisterModelComponent<DescriptionInfoNodeDisplay, DescriptionInfoComponentDisplay>();
+        StateHasChanged();
+    }
+    public async Task DeleteSnorkel()
+    {
+        await httpClient.DeleteAsync($"/api/snorkel/{snorkel.Id}");
+        navManager.NavigateTo("/");
+    }
 }
