@@ -8,6 +8,5 @@ namespace Domain.SnorkelAggregate
         public SnorkelSupportType Type { get; set; }
         public string ApplicationUserId { get; set; }
         public Guid SnorkelId { get; set; }
-        public Snorkel Snorkel { get; set; }
     }
 }

@@ -33,7 +33,9 @@ namespace WebAPI.Controllers.Aggregates
         public async Task<ActionResult<IEnumerable<Snorkel>>> GetSnorkels()
         {
             return Ok(applicationDbContext.Snorkels
-                .Include(s => s.Image).ToList());
+                .Include(s => s.Image)
+                .Include(s => s.SnorkelSupports)
+                .ToList());
         }
 
         [HttpGet("{id}")]
@@ -81,7 +83,7 @@ namespace WebAPI.Controllers.Aggregates
 
         [HttpPost("{id}")]
         [Authorize]
-        public async Task<ActionResult> SupportSnorkel([FromRoute] Guid id, [FromBody] SnorkelSupport snorkelSupport)
+        public async Task<ActionResult> SupportSnorkel([FromRoute] Guid id)
         {
             ApplicationUser applicationUser = await userManager.FindByIdAsync(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             Snorkel snorkel = applicationDbContext.Snorkels
@@ -89,7 +91,7 @@ namespace WebAPI.Controllers.Aggregates
                 .FirstOrDefault(snorkel => snorkel.Id == id);
             if (snorkel.SnorkelSupports.Count(snorkel => snorkel.ApplicationUserId == applicationUser.Id) < 1)
             {
-                snorkel.SnorkelSupports.Add(snorkelSupport);
+                snorkel.SnorkelSupports.Add(new SnorkelSupport() { SnorkelId = snorkel.Id, ApplicationUserId = applicationUser.Id });
             }
             await applicationDbContext.SaveChangesAsync();
             return Ok();

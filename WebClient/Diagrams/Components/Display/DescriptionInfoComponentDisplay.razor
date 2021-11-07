@@ -1,31 +1,13 @@
 ﻿<div class="card">
     <div class="card-body">
-        <h3>Whats the name of your snorkel?</h3>
-        <input @bind="name"/>
-        <h3>Describe your snorkel</h3>
-        <input @bind="description"/>
-        <button @onclick="() => AddDescription()">Add Description</button>
+        <h3>Snorkel Tags:</h3>
+        <h3>@Node.Snorkel?.TagsCommaSeperated</h3>
     </div>
-    @foreach (var port in Node.Ports)
-    {
-        <PortRenderer Port="port" />
-    }
 </div>
 
 @code{
     string name;
     string description;
     [Parameter]
-    public DescriptionInfoNode Node { get; set; }
-
-    public void AddDescription()
-    {
-        Node.SnorkelInConfiguration.DescriptionInfos.Add(new DescriptionInfo
-        {
-            Description = description
-        });
-        Node.SnorkelInConfiguration.Name = name;
-        description = string.Empty;
-        name = string.Empty;
-    }
+    public DescriptionInfoNodeDisplay Node { get; set; }
 }

@@ -7,10 +7,21 @@
     <div class="titleSection">
         <h2>Explore @snorkel?.Name</h2>
         <AuthorizeView>
-            @if (context.User.Claims.First(s => s.Type == "sub")?.Value == snorkel?.ApplicationUserId)
-            {
-                <button @onclick="async() => await DeleteSnorkel()">Delete Snorkel</button>
-            }
+            <Authorized>
+                @if (context.User.Claims.First(s => s.Type == "sub")?.Value == snorkel?.ApplicationUserId)
+                {
+                    <button @onclick="async() => await DeleteSnorkel()">Delete Snorkel</button>
+                }
+                else
+                {
+                    <button @onclick="async () => await Upvote(snorkel.Id)">
+                        <img src="/thumbs-up.png"/>UpVote
+                    </button>
+                }
+            </Authorized>
+            <NotAuthorized>
+                <h3>Login To Upvote the Snorkel</h3>
+            </NotAuthorized>
         </AuthorizeView>
         <button @onclick='() => navManager.NavigateTo("/")'>Back to HomePage</button>
     </div>
@@ -67,7 +78,7 @@
         }
         foreach (var item in snorkel.DescriptionInfos)
         {
-            diagram.Nodes.Add(new DescriptionInfoNode());
+            diagram.Nodes.Add(new DescriptionInfoNodeDisplay() { Snorkel = snorkel });
         }
 
         StateHasChanged();
@@ -76,5 +87,9 @@
     {
         await httpClient.DeleteAsync($"/api/snorkel/{snorkel.Id}");
         navManager.NavigateTo("/");
+    }
+    public async Task Upvote(Guid id)
+    {
+        await httpClient.PostAsync($"/api/snorkel/{id}", new StringContent(""));
     }
 }

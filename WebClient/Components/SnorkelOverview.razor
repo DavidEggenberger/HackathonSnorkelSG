@@ -14,6 +14,10 @@
             {
                 <section class="snorkleSection" @onclick="async() => await pinMap.NavigateToPin(snorkel.Lattitude, snorkel.Longitude)">
                     <p>@snorkel.Name</p>
+                    <div style="display: flex;">
+                        <img src="/thumbs-up.png" style="margin-right: 5px;"/>
+                        <p>@snorkel.SnorkelSupports.Count</p>
+                    </div>                 
                 </section>
             }
         }
