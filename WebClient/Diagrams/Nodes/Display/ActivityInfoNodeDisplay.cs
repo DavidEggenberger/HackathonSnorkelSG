@@ -5,15 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebClient.Diagrams.Nodes
+namespace WebClient.Diagrams.Nodes.Display
 {
     public class ActivityInfoNodeDisplay : NodeModel
     {
         public Snorkel SnorkelInConfiguration { get; set; }
         public ActivityInfoNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
-            AddPort(PortAlignment.Top);
-            AddPort(PortAlignment.Bottom);
+            
         }
     }
 }

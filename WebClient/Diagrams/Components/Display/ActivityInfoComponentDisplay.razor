@@ -1,38 +1,11 @@
 ﻿<div class="card">
     <div class="card-body">
         <h4>Add activities that can be done there</h4>
-        <div style="max-height: 160px; overflow-y: scroll;">
-            @foreach (var item in Node.SnorkelInConfiguration.ActivityInfos)
-            {
-                <div style="display: flex;">
-                    <p>@item.ActivityName</p>
-                    <button @onclick="() => RemoveActivity(item.ActivityName)">Remove</button>
-                </div>              
-            }
-            <div style="display: flex;">
-                <input @bind="activityTemporary" />
-                <button @onclick="() => AddActivity()">Add</button>
-            </div>
-        </div>
+        
     </div>
-    @foreach (var port in Node.Ports)
-    {
-        <PortRenderer Port="port" />
-    }
 </div>
 
 @code{
-    string activityTemporary;
     [Parameter]
     public ActivityInfoNodeDisplay Node { get; set; }
-
-    public void AddActivity()
-    {
-        Node.SnorkelInConfiguration.ActivityInfos.Add(new ActivityInfo { ActivityName = activityTemporary });
-        activityTemporary = string.Empty;
-    }
-    public void RemoveActivity(string name)
-    {
-        Node.SnorkelInConfiguration.ActivityInfos.Remove(Node.SnorkelInConfiguration.ActivityInfos.Where(s => s.ActivityName == name).First());
-    }
 }

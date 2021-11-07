@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace WebClient.Diagrams.Nodes
 {
-    public class ImageNodeDisplay : NodeModel
+    public class ImageNode : NodeModel
     {
         public Snorkel SnorkelInConfiguration { get; set; }
-        public ImageNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
+        public ImageNode(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
             AddPort(PortAlignment.Top);
             AddPort(PortAlignment.Bottom);

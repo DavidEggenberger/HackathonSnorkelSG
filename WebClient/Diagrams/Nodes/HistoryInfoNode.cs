@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace WebClient.Diagrams.Nodes
 {
-    public class HistoryInfoNodeDisplay : NodeModel
+    public class HistoryInfoNode : NodeModel
     {
         public Snorkel SnorkelInConfiguration { get; set; }
 
-        public HistoryInfoNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
+        public HistoryInfoNode(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
             AddPort(PortAlignment.Top);
             AddPort(PortAlignment.Bottom);

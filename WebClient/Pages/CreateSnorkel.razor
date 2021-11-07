@@ -95,10 +95,10 @@
         };
         diagram = new Diagram(options);
         diagram.RegisterModelComponent<CoordinatesNode, CoordinatesComponent>();
-        diagram.RegisterModelComponent<ImageNodeDisplay, ImageComponent>();
-        diagram.RegisterModelComponent<HistoryInfoNodeDisplay, HistoryInfoComponent>();
-        diagram.RegisterModelComponent<ActivityInfoNodeDisplay, ActivityInfoComponent>();
-        diagram.RegisterModelComponent<DescriptionInfoNodeDisplay, DescriptionInfoComponent>();
+        diagram.RegisterModelComponent<ImageNode, ImageComponent>();
+        diagram.RegisterModelComponent<HistoryInfoNode, HistoryInfoComponent>();
+        diagram.RegisterModelComponent<ActivityInfoNode, ActivityInfoComponent>();
+        diagram.RegisterModelComponent<DescriptionInfoNode, DescriptionInfoComponent>();
         diagram.Nodes.Add(new ImageNode(new Point(300, 300)) { SnorkelInConfiguration = snorkelInConfiguration });
         StateHasChanged();
     }

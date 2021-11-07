@@ -40,6 +40,7 @@ namespace WebAPI.Controllers.Aggregates
         public async Task<ActionResult<Snorkel>> GetSnorkelById(Guid id)
         {
             return Ok(applicationDbContext.Snorkels
+                .Include(snorkel => snorkel.Image)
                 .Include(snorkel => snorkel.SnorkelSupports)
                 .Include(snorkel => snorkel.ActivityInfos)
                 .Include(snorkel => snorkel.DescriptionInfos)

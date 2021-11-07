@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebClient.Diagrams.Nodes
+namespace WebClient.Diagrams.Nodes.Display
 {
     public class HistoryInfoNodeDisplay : NodeModel
     {
@@ -13,8 +13,7 @@ namespace WebClient.Diagrams.Nodes
 
         public HistoryInfoNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
-            AddPort(PortAlignment.Top);
-            AddPort(PortAlignment.Bottom);
+            
         }
     }
 }

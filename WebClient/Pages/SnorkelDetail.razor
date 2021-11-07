@@ -45,12 +45,25 @@
         diagram = new Diagram(options);
         snorkel = await httpClient.GetFromJsonAsync<Snorkel>($"/api/snorkel/{SnorkelId}");
 
-        diagram.Nodes.Add(new ImageNode(new Point((diagram.Container.Width / 2) - 120, (diagram.Container.Height / 2) - 120)) { N });
-
         diagram.RegisterModelComponent<ImageNodeDisplay, ImageComponentDisplay>();
         diagram.RegisterModelComponent<HistoryInfoNodeDisplay, HistoryInfoComponentDisplay>();
         diagram.RegisterModelComponent<ActivityInfoNodeDisplay, ActivityInfoComponentDisplay>();
         diagram.RegisterModelComponent<DescriptionInfoNodeDisplay, DescriptionInfoComponentDisplay>();
+
+        diagram.Nodes.Add(new ImageNodeDisplay(new Point((diagram.Container.Width / 2) - 120, (diagram.Container.Height / 2) - 120)) { Snorkel = snorkel });
+        foreach (var item in snorkel.HistoryInfos)
+        {
+            diagram.Nodes.Add(new HistoryInfoNodeDisplay());
+        }
+        foreach (var item in snorkel.ActivityInfos)
+        {
+            diagram.Nodes.Add(new ActivityInfoNodeDisplay());
+        }
+        foreach (var item in snorkel.DescriptionInfos)
+        {
+            diagram.Nodes.Add(new DescriptionInfoNode());
+        }
+
         StateHasChanged();
     }
     public async Task DeleteSnorkel()
