@@ -14,3 +14,21 @@ aside{
 .MapContainer {
     height: 100%;
 }
+a {
+    margin: 5px 0;
+    display: block;
+    background-color: unset;
+    height: 28px;
+    font-size: 18px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: white !important;
+    text-decoration: none !important;
+}
+a {
+    padding: 3px;
+    border-radius: 5px;
+    border: 3px solid white;
+    margin-left:
+}

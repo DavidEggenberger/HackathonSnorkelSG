@@ -9,7 +9,7 @@ namespace WebClient.Diagrams.Nodes.Display
 {
     public class HistoryInfoNodeDisplay : NodeModel
     {
-        public Snorkel SnorkelInConfiguration { get; set; }
+        public Snorkel Snorkel { get; set; }
 
         public HistoryInfoNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {

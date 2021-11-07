@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace WebClient.Diagrams.Nodes.Display
 {
-    public class ActivityInfoNodeDisplay : NodeModel
+    public class StreetViewDisplayNode : NodeModel
     {
         public Snorkel Snorkel { get; set; }
-        public ActivityInfoNodeDisplay(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
+        public StreetViewDisplayNode(Blazor.Diagrams.Core.Geometry.Point position = null) : base(position)
         {
-            
+
         }
     }
 }

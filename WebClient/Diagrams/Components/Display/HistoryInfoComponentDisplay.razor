@@ -1,32 +1,5 @@
 ﻿<div class="card">
     <div class="card-body">
-        <h3>Add Historic information</h3>
-        <label>Year</label>
-        <input @bind="year" type="number"/>
-        <label>Event</label>
-        <input @bind="eventt" type="text"/>
-        <button @onclick="() => Add()">Add</button>
+        
     </div>
-    @foreach (var port in Node.Ports)
-    {
-        <PortRenderer Port="port" />
-    }
 </div>
-
-@code{
-    int year;
-    string eventt;
-    [Parameter]
-    public HistoryInfoNodeDisplay Node { get; set; }
-
-    public void Add()
-    {
-        Node.SnorkelInConfiguration.HistoryInfos.Add(new HistoryInfo
-        {
-            Event = eventt,
-            Year = year
-        });
-        year = 0;
-        eventt = string.Empty;
-    }
-}
