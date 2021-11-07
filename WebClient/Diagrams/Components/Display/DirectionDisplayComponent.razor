@@ -1,6 +1,31 @@
-﻿<iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyA028cMwwgaNwgXObJghEwMhFBiBStf9Zo&origin=Oslo+Norway&destination=Telemark+Norway&avoid=tolls|highways"/>
+﻿@inject IJSRuntime JS
+
+<div style="padding: 10px; border-radius: 5px; border: 2px solid white;">
+    <h4 style="margin: 5px 0;">Navigate to Snorkel</h4>
+    <iframe style="height: 220px;" src=@($"https://www.google.com/maps/embed/v1/directions?key=AIzaSyA028cMwwgaNwgXObJghEwMhFBiBStf9Zo&origin={lobng},{lat}&destination={Node.Snorkel.Lattitude},{Node.Snorkel.Longitude}&avoid=tolls|highways") />
+</div>
 
 @code {
     [Parameter]
     public DirectionDisplayNode Node { get; set; }
+    static double lat, lobng;
+    static DirectionDisplayComponent th;
+    protected override void OnInitialized()
+    {
+        th = this;
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("getLocation");
+        }
+    }
+    [JSInvokable("SetUserLocation")]
+    public static void SetUserLocation(double lattitude, double longitude)
+    {
+        lobng = lattitude;
+        lat = longitude;
+        th.StateHasChanged();
+    }
 }

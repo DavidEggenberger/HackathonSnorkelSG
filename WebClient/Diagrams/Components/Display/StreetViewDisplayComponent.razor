@@ -1,4 +1,7 @@
-﻿<iframe src="https://www.google.com/maps/embed/v1/streetview?key=AIzaSyA028cMwwgaNwgXObJghEwMhFBiBStf9Zo&location=46.414382,10.013988&heading=210&pitch=10&fov=35"></iframe>
+﻿<div style="padding: 10px; border-radius: 5px; border: 2px solid white;">
+    <h4 style="margin: 5px 0;">Street View</h4>
+    <iframe style="height: 220px;" src=@($"https://www.google.com/maps/embed/v1/streetview?key=AIzaSyA028cMwwgaNwgXObJghEwMhFBiBStf9Zo&location={Node.Snorkel.Lattitude},{Node.Snorkel.Longitude}")></iframe>
+</div>
 
 
 @code {

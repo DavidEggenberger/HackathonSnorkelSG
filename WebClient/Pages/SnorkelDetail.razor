@@ -1,5 +1,6 @@
 ﻿@page "/snorkeldetail/{SnorkelId:guid}"
 @inject HttpClient httpClient
+@inject IHttpClientFactory htpFactory
 @inject NavigationManager navManager
 
 <div class="SnorkelDetailContainer">
@@ -43,7 +44,7 @@
             }
         };
         diagram = new Diagram(options);
-        snorkel = await httpClient.GetFromJsonAsync<Snorkel>($"/api/snorkel/{SnorkelId}");
+        snorkel = await htpFactory.CreateClient("UnauthenticatedHttpClient").GetFromJsonAsync<Snorkel>($"/api/snorkel/{SnorkelId}");
 
         diagram.RegisterModelComponent<DirectionDisplayNode, DirectionDisplayComponent>();
         diagram.RegisterModelComponent<StreetViewDisplayNode, StreetViewDisplayComponent>();
@@ -53,8 +54,8 @@
         diagram.RegisterModelComponent<DescriptionInfoNodeDisplay, DescriptionInfoComponentDisplay>();
 
         diagram.Nodes.Add(new ImageNodeDisplay(new Point((diagram.Container.Width / 2) - 120, (diagram.Container.Height / 2) - 120)) { Snorkel = snorkel });
-        diagram.Nodes.Add(new StreetViewDisplayNode());
-        diagram.Nodes.Add(new DirectionDisplayNode());
+        diagram.Nodes.Add(new StreetViewDisplayNode(new Point((diagram.Container.Width - 200) - 120, (diagram.Container.Height / 2))) { Snorkel = snorkel });
+        diagram.Nodes.Add(new DirectionDisplayNode(new Point(50, 50)) { Snorkel = snorkel });
 
         foreach (var item in snorkel.HistoryInfos)
         {
