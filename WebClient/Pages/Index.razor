@@ -3,13 +3,13 @@
 
 <div class="IndexContainer">
     <aside>
-        <SnorkelOverview pinMap="pinmap"/>
+        <SnorkelOverview pinMap="pinmap" />
     </aside>
     <div class="MapContainer">
         <PinMap @ref="pinmap" Data="@snorkels" PinLongitude="@(x => x.Longitude)" PinLatitude="@(x => x.Lattitude)" PinId="(x => x.Id)">
             <PinTemplate>
                 <h4>@context.Name</h4>
-                <img height="90" src="@(base64LocalImage(context.Image.Base64Data))"/>
+                <img height="90" src="@(base64LocalImage(context.Image.Base64Data))" />
                 <br />
                 <a style="color: white !important;" href="@($"/SnorkelDetail/{context.Id}")">Let's snorkle! (Explore the place)</a>
             </PinTemplate>
@@ -18,6 +18,7 @@
 </div>
 
 @code{
+    
     private PinMap.PinMap<Snorkel> pinmap = new PinMap.PinMap<Snorkel>();
     private string base64LocalImage(string base64) => $"data:image/jpg;base64,{base64}";
     private List<Snorkel> snorkels = new List<Snorkel>();

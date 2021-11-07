@@ -2,6 +2,7 @@
 @inject HttpClient httpClient
 @inject IHttpClientFactory htpFactory
 @inject NavigationManager navManager
+@inject IAccessTokenProvider tokenProvider
 
 <div class="SnorkelDetailContainer">
     <div class="titleSection">
@@ -10,17 +11,35 @@
             <Authorized>
                 @if (context.User.Claims.First(s => s.Type == "sub")?.Value == snorkel?.ApplicationUserId)
                 {
-                    <button @onclick="async() => await DeleteSnorkel()">Delete Snorkel</button>
+                    <button @onclick="async () => await DeleteSnorkel()">Delete Snorkel</button>
                 }
                 else
                 {
                     <button @onclick="async () => await Upvote(snorkel.Id)">
-                        <img src="/thumbs-up.png"/>UpVote
+                        <img src="/thumbs-up.png" />UpVote
                     </button>
                 }
+                @if (checkedIn is false)
+                {
+                    <button @onclick="async () => await CheckIn()">Check-In</button>
+                }
+                else
+                {
+                    <button @onclick="async () => await CheckOut()">Check-Out</button>
+                }
+                <div style="display: flex;">
+                    <h8>Checked-In Snorklers:</h8>
+                    @if (activeUsers is not null && activeUsers.Count > 0)
+                    {
+                        foreach (var item in activeUsers)
+                        {
+                            <img src="@(item.PictureUri)" style="height: 30px; width: 30px; border-radius: 50%;" />
+                        }
+                    }
+                </div>
             </Authorized>
             <NotAuthorized>
-                <h3>Login To Upvote the Snorkel</h3>
+                <h3>Login To Upvote the Snorkel and Check-In</h3>
             </NotAuthorized>
         </AuthorizeView>
         <button @onclick='() => navManager.NavigateTo("/")'>Back to HomePage</button>
@@ -33,6 +52,12 @@
 </div>
 
 @code{
+    private bool checkedIn;
+    private List<ApplicationUser> activeUsers;
+    [CascadingParameter]
+    public HubConnection hubConnection { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
     [Parameter]
     public Guid SnorkelId { get; set; }
     private Snorkel snorkel;
@@ -80,7 +105,31 @@
         {
             diagram.Nodes.Add(new DescriptionInfoNodeDisplay() { Snorkel = snorkel });
         }
+        ClaimsPrincipal claimsPrincipal;
+        if ((claimsPrincipal = (await AuthState).User).Identity.IsAuthenticated)
+        {
+            AccessToken token = new AccessToken();
 
+            (await tokenProvider.RequestAccessToken()).TryGetToken(out token);
+
+            if (token is not null)
+            {
+                hubConnection = new HubConnectionBuilder()
+                .WithUrl(navManager.ToAbsoluteUri("/hub"), options =>
+                {
+                    options.AccessTokenProvider = async () => token.Value;
+                })
+                .Build();
+                await hubConnection.StartAsync();
+                StateHasChanged();
+            }
+
+            hubConnection.On("Update", async () =>
+            {
+                activeUsers = await httpClient.GetFromJsonAsync<List<ApplicationUser>>($"/api/snorkel/active/{snorkel.Id}");
+                StateHasChanged();
+            });
+        }
         StateHasChanged();
     }
     public async Task DeleteSnorkel()
@@ -91,5 +140,15 @@
     public async Task Upvote(Guid id)
     {
         await httpClient.PostAsync($"/api/snorkel/{id}", new StringContent(""));
+    }
+    public async Task CheckIn()
+    {
+        checkedIn = true;
+        await hubConnection.InvokeAsync("CheckIn", snorkel.Id.ToString());
+    }
+    public async Task CheckOut()
+    {
+        checkedIn = false;
+        await hubConnection.InvokeAsync("CheckOut");
     }
 }

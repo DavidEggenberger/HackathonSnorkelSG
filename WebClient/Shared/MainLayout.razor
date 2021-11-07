@@ -2,32 +2,33 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
-<div class="page">
-    <nav>
-        <div class="LogoSection">
-            <img src="/snorkel (1).png" />
-            <h1 style="cursor: pointer;" @onclick='() => Navigation.NavigateTo("/")'>SnorkelSG</h1>
-        </div>
-        <AuthorizeView>
-            <NotAuthorized>
-                <button><a href="authentication/login">Log in</a></button>
-            </NotAuthorized>
-            <Authorized>
-                <div class="ProfileSection">
-                    <h3>Hello, @context.User.Identity.Name!</h3>
-                    <img class="ProfileImage" src="@context.User.Claims.First(claim => claim.Type == "picture").Value" />
-                    <button class="nav-link btn btn-link" @onclick="BeginLogout"><a>Log out</a></button>
-                </div>
-            </Authorized>
-        </AuthorizeView>
-    </nav>
+    <div class="page">
+        <nav>
+            <div class="LogoSection">
+                <img src="/snorkel (1).png" />
+                <h1 style="cursor: pointer;" @onclick='() => Navigation.NavigateTo("/")'>SnorkelSG</h1>
+            </div>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <button><a href="authentication/login">Log in</a></button>
+                </NotAuthorized>
+                <Authorized>
+                    <div class="ProfileSection">
+                        <h3>Hello, @context.User.Identity.Name!</h3>
+                        <img class="ProfileImage" src="@context.User.Claims.First(claim => claim.Type == "picture").Value" />
+                        <button class="nav-link btn btn-link" @onclick="BeginLogout"><a>Log out</a></button>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </nav>
 
-    <main>
-        @Body
-    </main>
-</div>
+        <main>
+            @Body
+        </main>
+    </div>
 
-@code{
+
+@code{   
     private async Task BeginLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();

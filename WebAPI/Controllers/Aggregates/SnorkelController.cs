@@ -96,5 +96,11 @@ namespace WebAPI.Controllers.Aggregates
             await applicationDbContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpGet("active/{id}")]
+        public async Task<ActionResult> GetActiveUser(Guid id)
+        {
+            return Ok(applicationDbContext.Users.Where(s => s.CheckedInSnorkelId == id.ToString()));
+        }
     }
 }

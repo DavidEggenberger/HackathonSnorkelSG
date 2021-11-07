@@ -1,5 +1,13 @@
 ﻿<div class="card">
     <div class="card-body">
-        
+        @foreach (var item in Node.Snorkel.HistoryInfos)
+        {
+            <p>@item.Year: @item.Event</p>
+        }
     </div>
 </div>
+
+@code{ 
+    [Parameter]
+    public HistoryInfoNodeDisplay Node { get; set; }
+}
