@@ -21,7 +21,7 @@ namespace WebAPI.Hubs
         }
         public override async Task OnConnectedAsync()
         {
-            
+            await Clients.All.SendAsync("Update");
         }
         public override async Task OnDisconnectedAsync(Exception ex)
         {

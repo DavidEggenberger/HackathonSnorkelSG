@@ -126,7 +126,7 @@
                 await hubConnection.StartAsync();
                 StateHasChanged();
             }
-
+            activeUsers = await httpClient.GetFromJsonAsync<List<ApplicationUser>>($"/api/snorkel/active/{snorkel.Id}");
             hubConnection.On("Update", async () =>
             {
                 activeUsers = await httpClient.GetFromJsonAsync<List<ApplicationUser>>($"/api/snorkel/active/{snorkel.Id}");
