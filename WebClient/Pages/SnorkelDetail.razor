@@ -39,7 +39,7 @@
                 </div>
             </Authorized>
             <NotAuthorized>
-                <h3>Login To Upvote the Snorkel and Check-In</h3>
+                <h3 style="margin-left: 15px;">Login To Upvote the Snorkel and Check-In</h3>
             </NotAuthorized>
         </AuthorizeView>
         <button @onclick='() => navManager.NavigateTo("/")'>Back to HomePage</button>
@@ -95,15 +95,18 @@
 
         foreach (var item in snorkel.HistoryInfos)
         {
-            diagram.Nodes.Add(new HistoryInfoNodeDisplay());
+            diagram.Nodes.Add(new HistoryInfoNodeDisplay() { Snorkel = snorkel });
         }
         foreach (var item in snorkel.ActivityInfos)
         {
-            diagram.Nodes.Add(new ActivityInfoNodeDisplay());
+            diagram.Nodes.Add(new ActivityInfoNodeDisplay() { Snorkel = snorkel });
         }
         foreach (var item in snorkel.DescriptionInfos)
         {
-            diagram.Nodes.Add(new DescriptionInfoNodeDisplay() { Snorkel = snorkel });
+            if(item.Description != string.Empty)
+            {
+                diagram.Nodes.Add(new DescriptionInfoNodeDisplay() { Snorkel = snorkel });
+            }
         }
         ClaimsPrincipal claimsPrincipal;
         if ((claimsPrincipal = (await AuthState).User).Identity.IsAuthenticated)
